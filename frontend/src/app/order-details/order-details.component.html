@@ -1,0 +1,107 @@
+<div class="card">
+  <h2>Order Details Management</h2>
+  
+  <!-- Filters -->
+  <div class="filters">
+    <div class="form-group">
+      <label for="productFilter">Product Name:</label>
+      <input 
+        type="text" 
+        id="productFilter" 
+        class="form-control" 
+        [(ngModel)]="productFilter" 
+        (input)="applyFilters()"
+        placeholder="Filter by product name">
+    </div>
+    
+    <div class="form-group">
+      <label for="orderIdFilter">Order ID:</label>
+      <input 
+        type="text" 
+        id="orderIdFilter" 
+        class="form-control" 
+        [(ngModel)]="orderIdFilter" 
+        (input)="applyFilters()"
+        placeholder="Filter by order ID">
+    </div>
+    
+    <div class="form-group">
+      <label for="sortBy">Sort By:</label>
+      <select 
+        id="sortBy" 
+        class="form-control" 
+        [(ngModel)]="sortBy" 
+        (change)="applySorting()">
+        <option value="">No Sorting</option>
+        <option value="createdAt:desc">Created Date (Newest)</option>
+        <option value="createdAt:asc">Created Date (Oldest)</option>
+        <option value="totalPrice:desc">Total Price (High to Low)</option>
+        <option value="totalPrice:asc">Total Price (Low to High)</option>
+        <option value="productName:asc">Product Name (A-Z)</option>
+        <option value="productName:desc">Product Name (Z-A)</option>
+        <option value="quantity:desc">Quantity (High to Low)</option>
+        <option value="quantity:asc">Quantity (Low to High)</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Loading indicator -->
+  <div *ngIf="loading" class="loading">
+    Loading order details...
+  </div>
+
+  <!-- Error message -->
+  <div *ngIf="error" class="error">
+    {{ error }}
+  </div>
+
+  <!-- Order details table -->
+  <div *ngIf="!loading && !error">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Product Name</th>
+          <th>SKU</th>
+          <th>Quantity</th>
+          <th>Unit Price</th>
+          <th>Total Price</th>
+          <th>Created Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let detail of orderDetails">
+          <td>{{ detail.orderId }}</td>
+          <td>{{ detail.productName }}</td>
+          <td>{{ detail.productSku }}</td>
+          <td>{{ detail.quantity }}</td>
+          <td>${{ detail.unitPrice | number:'1.2-2' }}</td>
+          <td>${{ detail.totalPrice | number:'1.2-2' }}</td>
+          <td>{{ detail.createdAt | date:'medium' }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div class="pagination" *ngIf="totalPages > 1">
+      <button 
+        class="btn btn-secondary" 
+        [disabled]="currentPage === 0" 
+        (click)="goToPage(currentPage - 1)">
+        Previous
+      </button>
+      
+      <span class="page-info">
+        Page {{ currentPage + 1 }} of {{ totalPages }}
+        ({{ totalElements }} total order details)
+      </span>
+      
+      <button 
+        class="btn btn-secondary" 
+        [disabled]="currentPage >= totalPages - 1" 
+        (click)="goToPage(currentPage + 1)">
+        Next
+      </button>
+    </div>
+  </div>
+</div>
