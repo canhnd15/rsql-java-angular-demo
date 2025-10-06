@@ -17,7 +17,7 @@ start cmd /k "mvnw spring-boot:run"
 echo.
 echo 4. Starting Angular frontend...
 cd ..\frontend
-start cmd /k "npm install && npm run dev"
+start cmd /k "npm install && npm start"
 
 echo.
 echo Project started successfully!

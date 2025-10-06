@@ -15,11 +15,13 @@ export class OrderService {
     page: number = 0,
     size: number = 10,
     filters?: string,
-    sorts?: string
+    sorts?: string,
+    includeDetails: boolean = true
   ): Observable<ApiResponse<PageResponse<Order>>> {
     let params = new HttpParams()
       .set('page', page.toString())
-      .set('size', size.toString());
+      .set('size', size.toString())
+      .set('includeDetails', includeDetails.toString());
 
     if (filters) {
       params = params.set('filters', filters);

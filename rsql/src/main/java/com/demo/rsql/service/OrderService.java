@@ -22,7 +22,8 @@ public class OrderService {
     public Page<OrderDto> getAll(
             String filters,
             String sorts,
-            Pageable pageable
+            Pageable pageable,
+            boolean includeDetails
     ) {
         Specification<Order> finalSpec = SpecificationBuilder.build(filters,
                 FieldMapperUtil.getFieldMap(OrderDto.class, Order.class));
@@ -30,7 +31,19 @@ public class OrderService {
 
         Page<Order> page = orderRepository.findAll(finalSpec, customPageable);
 
-        return page.map(OrderDto::of);
+        if (!includeDetails) {
+            return page.map(OrderDto::of);
+        }
+
+        return page.map(order -> {
+            OrderDto dto = OrderDto.of(order);
+            if (order.getOrderDetails() != null) {
+                dto.setOrderDetails(order.getOrderDetails().stream()
+                        .map(com.demo.rsql.dto.OrderDetailDto::of)
+                        .toList());
+            }
+            return dto;
+        });
     }
 }
 

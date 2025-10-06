@@ -20,10 +20,11 @@ public class OrderController {
     public ResponseEntity<ApiResponseDto<?>> getAll(
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "sorts", required = false) String sorts,
+            @RequestParam(value = "includeDetails", required = false, defaultValue = "false") boolean includeDetails,
             Pageable pageable
     ) {
         ApiResponseDto<?> resp = ApiResponseDto.builder()
-                .data(orderService.getAll(filters, sorts, pageable))
+                .data(orderService.getAll(filters, sorts, pageable, includeDetails))
                 .status(ResponseStatus.SUCCESS.name())
                 .message("Get order list successfully!")
                 .build();

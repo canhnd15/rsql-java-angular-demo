@@ -87,7 +87,7 @@ export class OrdersComponent implements OnInit {
       filters += `status=="${this.statusFilter}"`;
     }
 
-    this.orderService.getOrders(this.currentPage, this.pageSize, filters, this.sortBy)
+    this.orderService.getOrders(this.currentPage, this.pageSize, filters, this.sortBy, true)
       .subscribe({
         next: (response: ApiResponse<PageResponse<Order>>) => {
           this.orders = response.data.content;

@@ -72,18 +72,44 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let order of orders">
-          <td>{{ order.orderNumber }}</td>
-          <td>{{ order.customerName }}</td>
-          <td>{{ order.customerEmail }}</td>
-          <td>${{ order.totalAmount | number:'1.2-2' }}</td>
-          <td>
-            <span class="status-badge status-{{ order.status.toLowerCase() }}">
-              {{ order.status }}
-            </span>
-          </td>
-          <td>{{ order.createdAt | date:'medium' }}</td>
-        </tr>
+        <ng-container *ngFor="let order of orders">
+          <tr class="order-row">
+            <td>{{ order.orderNumber }}</td>
+            <td>{{ order.customerName }}</td>
+            <td>{{ order.customerEmail }}</td>
+            <td>${{ order.totalAmount | number:'1.2-2' }}</td>
+            <td>
+              <span class="status-badge status-{{ order.status.toLowerCase() }}">
+                {{ order.status }}
+              </span>
+            </td>
+            <td>{{ order.createdAt | date:'medium' }}</td>
+          </tr>
+          <tr class="details-row" *ngIf="order.orderDetails?.length">
+            <td colspan="6">
+              <table class="table nested">
+                <thead>
+                  <tr>
+                    <th style="width: 30%">Product</th>
+                    <th style="width: 15%">SKU</th>
+                    <th style="width: 15%">Qty</th>
+                    <th style="width: 20%">Unit Price</th>
+                    <th style="width: 20%">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let d of order.orderDetails">
+                    <td>{{ d.productName }}</td>
+                    <td>{{ d.productSku }}</td>
+                    <td>{{ d.quantity }}</td>
+                    <td>${{ d.unitPrice | number:'1.2-2' }}</td>
+                    <td>${{ d.totalPrice | number:'1.2-2' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </ng-container>
       </tbody>
     </table>
 

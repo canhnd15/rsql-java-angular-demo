@@ -18,7 +18,7 @@ gnome-terminal -- bash -c "mvnw spring-boot:run; exec bash" 2>/dev/null || xterm
 echo ""
 echo "4. Starting Angular frontend..."
 cd ../frontend
-gnome-terminal -- bash -c "npm install && npm run dev; exec bash" 2>/dev/null || xterm -e "npm install && npm run dev" 2>/dev/null || echo "Please start the Angular application manually: cd frontend && npm install && npm run dev"
+gnome-terminal -- bash -c "npm install && npm start; exec bash" 2>/dev/null || xterm -e "npm install && npm start" 2>/dev/null || echo "Please start the Angular application manually: cd frontend && npm install && npm start"
 
 echo ""
 echo "Project started successfully!"
@@ -35,7 +35,7 @@ cleanup() {
     echo "Stopping services..."
     docker-compose down
     pkill -f "spring-boot:run" 2>/dev/null
-    pkill -f "npm run dev" 2>/dev/null
+    pkill -f "npm start" 2>/dev/null
     echo ""
     echo "All services stopped."
     exit 0
